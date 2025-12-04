@@ -76,4 +76,76 @@ def main():
     save_features(data)                                                            # save features CSV
 
 if __name__ == "__main__":
-    main()                                                                          # execute main function
+    main()     
+
+
+# --- FEATURE ENGINEERING FOR MACHINE LEARNING ---
+def create_ml_features(data: pd.DataFrame, lags: int = 5, rolling_window: int = 5) -> pd.DataFrame:
+    """
+    Create lagged and rolling features for ML models to forecast 1-day-ahead realized volatility.
+
+    Args:
+        data (pd.DataFrame): Must contain 'RealizedVol' and 'SP500'.
+        lags (int): Number of lagged days for RV and absolute returns.
+        rolling_window (int): Window size for rolling statistics (Std Dev and Mean).
+
+    Returns:
+        pd.DataFrame: Features for ML models including target variable.
+    """
+    df = data.copy()  # Work on a copy to avoid modifying original data
+
+    # --- Ensure Log Returns exist ---
+    if 'LogReturn' not in df.columns:
+        df['LogReturn'] = np.log(df['SP500'] / df['SP500'].shift(1))  # ln(today price / yesterday price)
+
+    # --- 1. Lagged realized volatility features ---
+    for lag in range(1, lags + 1):
+        df[f'RV_Lag_{lag}'] = df['RealizedVol'].shift(lag)  # RV from previous days
+
+    # --- 2. Lagged absolute returns ---
+    df['AbsReturn'] = np.abs(df['LogReturn'])  # daily absolute log returns
+    for lag in range(1, lags + 1):
+        df[f'AbsReturn_Lag_{lag}'] = df['AbsReturn'].shift(lag)  # previous day absolute returns
+
+    # --- 3. Rolling standard deviation of absolute returns ---
+    df['AbsReturn_RollStd'] = df['AbsReturn'].rolling(window=rolling_window).std().shift(1)  # shift(1) to avoid lookahead
+
+    # --- 4. Rolling mean of absolute returns ---
+    df['AbsReturn_RollMean'] = df['AbsReturn'].rolling(window=rolling_window).mean().shift(1)
+
+    # --- 5. Include VIX as feature ---
+    df['VIX_Lag_1'] = df['VIX'].shift(1)  # previous day's VIX
+
+    # --- 6. Target variable ---
+    df['Target_Vol'] = df['RealizedVol'].shift(-1)  # next-day realized volatility
+
+    # --- 7. Final cleanup ---
+    features_to_keep = [col for col in df.columns if 'Lag' in col or 'Roll' in col or col == 'Target_Vol']      #Keep only relevant features and target, drop rows with NaNs caused by shifts/rolling
+    df = df[features_to_keep].dropna()
+
+    print(f"Features generated. Final shape: {df.shape}")  # confirm size of processed dataset
+    return df
+
+
+# --- MAIN FUNCTION TO PROCESS AND SAVE FEATURES ---
+def process_and_save_features():
+    print("\n--- STARTING FEATURE ENGINEERING ---")
+
+    # 1. Load raw merged data
+    raw_data = load_data("data/raw/merged_data.csv")
+    if raw_data is None:
+        print("Error: Raw data not found. Run main.py first.")
+        return None
+
+    data_with_rv = compute_realized_volatility(raw_data)                    #Compute Realized Volatility if not already present
+
+    processed_data = create_ml_features(data_with_rv)                       #Generate ML features and target
+
+    save_features(processed_data, path="data/processed/features.csv")       #Save processed features
+
+    return processed_data
+
+
+if __name__ == "__main__":
+    process_and_save_features()
+
