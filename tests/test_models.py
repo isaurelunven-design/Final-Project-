@@ -58,7 +58,7 @@ def test_garch_expanding_window_forecast(mock_arch_model, sample_garch_data):
     assert 'RealizedVol' in result.columns
     
     # 2. check the lenght of the prevision 
-    assert len(result) == (len(sample_garch_data) - 1) - start_window + 1  
+    assert len(result) == (len(sample_garch_data) - 1) - start_window
     assert len(result) == 4                                                     # Total iterations = (Total_Data - Start_Window). 9-5=4 iterations.
 
     # 3. check of the scaling and the forecast value
