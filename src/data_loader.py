@@ -4,7 +4,7 @@ import numpy as np
 from arch import arch_model
 from tqdm import tqdm 
 
-# Step 0: dowload SP500 and VIX  
+## Step 0: dowload SP500 and VIX  
 def download_sp500(start_date="2010-01-01", end_date="2024-12-31"):        
     sp500 = yf.download("^GSPC", start=start_date, end=end_date, auto_adjust=True)          # ^GSPC is the ticker for S&P 500 in Yahoo 
     sp500 = sp500[["Close"]].rename(columns={"Close": "SP500"})                             # we only keep the column "Close"
@@ -21,7 +21,8 @@ def load_data(path="data/raw/merged_data.csv"):
     data = pd.read_csv(path, index_col=0, parse_dates=True)                       
     return data
 
-# Step 1: We compute the REALIZED VOLATILITY  
+## Step 1: We compute the Realized Volatility
+
 def compute_realized_volatility(data, window=30):
     df = data.copy()                                                                        # Copy data to avoid modifying the original DataFrame
     df['LogReturn'] = np.log(df['SP500'] / df['SP500'].shift(1))                            # = calculation of the daily log return 
@@ -35,7 +36,8 @@ def save_features(data, path="data/processed/features.csv"):
     data.to_csv(path)                                                                       # save features dataframe to CSV
     print(f"✔ Features saved to {path}")  
 
-# Step 2: We create FEATURE ENGINEERING for ML 
+## Step 2: We create FEATURE ENGINEERING for ML 
+
 def create_ml_features(data: pd.DataFrame, lags: int = 5, rolling_window: int = 5) -> pd.DataFrame:
     df = data.copy()
     y = df['RealizedVol'].squeeze().dropna()
@@ -79,17 +81,13 @@ def process_and_save_features():
     save_features(processed_data, path="data/processed/features.csv")       
     return processed_data
 
-    # We use a caching function to help the execution 
-def load_or_run_forecast(model_name, forecast_func, *args, **kwargs):
+def load_or_run_forecast(model_name, forecast_func, *args, **kwargs):                               # We use a caching function because without it it is too slow 
     path = f"results/{model_name}_forecast.csv"
-    
     try:
-        # Essaie de charger le fichier
         result = pd.read_csv(path, index_col=0, parse_dates=True)
         print(f"Loading {model_name} results from cache: {path}")
         return result
     except FileNotFoundError:
-        # Sinon, on calcule
         print(f"Running full {model_name} forecast (may take a while)...")
         result = forecast_func(*args, **kwargs)
         result.to_csv(path)

@@ -3,6 +3,8 @@ from numpy import sqrt
 from typing import List, Dict, Any
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
+## Step 5: We evaluate and compare models 
+
 def evaluate_models(results_list: List[pd.DataFrame]) -> pd.DataFrame:
     metrics: Dict[str, Dict[str, Any]] = {}
     if not results_list:                                                            # Check for empty input list

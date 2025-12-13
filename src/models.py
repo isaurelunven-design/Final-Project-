@@ -5,7 +5,7 @@ from tqdm import tqdm
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 
-# Step 3: We forecast through GARCH  
+## Step 3: We forecast through GARCH  
 def compute_log_returns(data:pd.DataFrame) -> pd.Series:                                    # we compute daily log returns from the SP500 column 
     return np.log(data['SP500']/data['SP500'].shift(1)).dropna()
 
@@ -46,7 +46,7 @@ def garch_expanding_window_forecast(
     result["RealizedVol"] = data.loc[result["Date"], "RealizedVol"].values                 
     return result.set_index("Date")
 
-# Step 4: We forecast by using ML model 
+## Step 4: We forecast by using ML model 
 def ml_expanding_window_forecast(
     processed_data: pd.DataFrame, 
     model_type: str, 
