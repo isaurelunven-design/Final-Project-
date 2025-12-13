@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 import yfinance as yf
 import numpy as np
@@ -18,15 +17,6 @@ def download_vix(start_date="2010-01-01", end_date="2024-12-31"):
     vix.index = pd.to_datetime(vix.index)                                           
     return vix
 
-def merge_data(sp500, vix):                                                     
-    data = sp500.merge(vix, left_index=True, right_index=True, how="inner")                 # we keep only dates present in both
-    return data
-
-def save_data(data, path="data/raw/merged_data.csv"):
-    os.makedirs(os.path.dirname(path), exist_ok=True)                                       # we create a folder if it doesn't exist
-    data.to_csv(path)                                                                       # we save dataframe to CSV
-    print(f"Data saved to {path}")  
-
 def load_data(path="data/raw/merged_data.csv"):
     data = pd.read_csv(path, index_col=0, parse_dates=True)                       
     return data
@@ -41,8 +31,7 @@ def compute_realized_volatility(data, window=30):
     df = df.drop(columns=['LogReturn', 'SquaredReturn'])                                    # Clean up intermediate columns
     return df 
 
-def save_features(data, path="data/processed/features.csv"):
-    os.makedirs(os.path.dirname(path), exist_ok=True)                             
+def save_features(data, path="data/processed/features.csv"):                            
     data.to_csv(path)                                                                       # save features dataframe to CSV
     print(f"✔ Features saved to {path}")  
 
@@ -78,12 +67,12 @@ def create_ml_features(data: pd.DataFrame, lags: int = 5, rolling_window: int = 
     return df
 
 def process_and_save_features():
-    print("\n--- STARTING FEATURE ENGINEERING ---")
+    print("\n Starting Feature Engineering ")
     raw_data = load_data("data/raw/merged_data.csv")
     if raw_data is None:
         print("Error: Raw data not found. Run main.py first.")
         return None
-    data_with_rv = raw_data.copy() 
+    data_with_rv = raw_data
     if 'RealizedVol' not in data_with_rv.columns:
          data_with_rv = compute_realized_volatility(data_with_rv)      
     processed_data = create_ml_features(data_with_rv)                       
@@ -92,16 +81,18 @@ def process_and_save_features():
 
     # We use a caching function to help the execution 
 def load_or_run_forecast(model_name, forecast_func, *args, **kwargs):
-    path = f"results/{model_name}_forecast.csv"                                         
-    os.makedirs("results", exist_ok=True)
+    path = f"results/{model_name}_forecast.csv"
     
-    if os.path.exists(path):                                                            # check that the cache exist 
+    try:
+        # Essaie de charger le fichier
+        result = pd.read_csv(path, index_col=0, parse_dates=True)
         print(f"Loading {model_name} results from cache: {path}")
-        return pd.read_csv(path, index_col=0, parse_dates=True)
-    else:                                                                               # otherwise runs the forecast function 
+        return result
+    except FileNotFoundError:
+        # Sinon, on calcule
         print(f"Running full {model_name} forecast (may take a while)...")
         result = forecast_func(*args, **kwargs)
-        
         result.to_csv(path)
         print(f"Saved {model_name} results to cache.")
-        return result 
+        return result
+
