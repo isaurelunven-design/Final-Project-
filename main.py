@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from numpy import sqrt
 import yfinance as yf
+RANDOM_SEED = 42                                    # to be reproductible 
+np.random.seed(RANDOM_SEED)
 from src.data_loader import download_sp500, download_vix, compute_realized_volatility, save_features, create_ml_features, load_or_run_forecast
 from src.models import garch_expanding_window_forecast, ml_expanding_window_forecast
 from src.evaluation import evaluate_models
@@ -72,7 +74,7 @@ if __name__ == "__main__":
     performance_table = evaluate_models(all_results)                         
     print("\n Model Performance table:")
     print(performance_table)
-    
+
     performance_table.to_csv("results/performance_metrics.csv")
     print("\n✔ Performance metrics saved to results/performance_metrics.csv")
 
