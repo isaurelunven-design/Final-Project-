@@ -3,8 +3,7 @@ import pytest
 import src.data_loader as dl
 from src.data_loader import download_sp500, download_vix, compute_realized_volatility, save_features, load_or_run_forecast
 
-#we use simulated data 
-@pytest.fixture
+@pytest.fixture                # this fct simulate data 
 def sample_data():
     dates = pd.date_range(start="2023-01-01", periods=5, freq='D')
     sp = pd.DataFrame({"SP500": [100, 101, 102, 103, 104]}, index=dates)
