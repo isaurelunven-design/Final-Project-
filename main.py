@@ -5,8 +5,8 @@ import yfinance as yf
 RANDOM_SEED = 42                                    # to be reproductible 
 np.random.seed(RANDOM_SEED)
 from src.data_loader import download_sp500, download_vix, compute_realized_volatility, save_features, create_ml_features, load_or_run_forecast
-from src.models import garch_expanding_window_forecast, ml_expanding_window_forecast
-from src.evaluation import evaluate_models
+from src.models import garch_expanding_window_forecast, ml_expanding_window_forecast, run_garch_estimation_for_report # <--- CORRECTION 1: Ajout de la fonction et fin de la ligne
+from src.evaluation import evaluate_models 
 
 if __name__ == "__main__":
 
@@ -21,6 +21,10 @@ if __name__ == "__main__":
     data['VIX']   = pd.to_numeric(data['VIX'], errors='coerce')
     data = data.dropna(subset=['SP500', 'VIX'])                                     
     data = compute_realized_volatility(data, window=30) 
+    from src.models import compute_log_returns # Assurez-vous d'importer ceci
+    log_returns = compute_log_returns(data)
+    print("\n 1.b. GARCH Parameter Estimation for LaTeX Report")
+    run_garch_estimation_for_report(log_returns)
     data.to_csv("data/raw/merged_data.csv")
     print("✔ Data saved to data/raw/merged_data.csv")
 
