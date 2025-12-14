@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     vix_benchmark = data.loc[garch_result.index]
     vix_benchmark = vix_benchmark[['VIX']].rename(columns={'VIX': 'VIX_Forecast'})
-    vix_benchmark['VIX_Forecast'] = vix_benchmark['VIX_Forecast'] / np.sqrt(252)                       #le désanualiser 
+    vix_benchmark['VIX_Forecast'] = (vix_benchmark['VIX_Forecast'] / 100) / np.sqrt(252)                       #le désanualiser 
     vix_benchmark['RealizedVol'] = garch_result['RealizedVol']
     print("\n 5. Evaluation of Model's performance")
 
