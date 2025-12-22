@@ -6,7 +6,7 @@ from src.models import garch_expanding_window_forecast, ml_expanding_window_fore
 from src.evaluation import evaluate_models 
 
 RANDOM_SEED = 42 
-np.random.seed(RANDOM_SEED)                                   # to be reproductible 
+np.random.seed(RANDOM_SEED)                                                     # to be reproductible 
 
 if __name__ == "__main__":
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     save_features(processed_data, path="data/processed/features.csv")
     start_window_size = 1000
 
-    ## Step 3: We forecast through GARCH forecast (CACHED)
+    ## Step 3: We forecast through GARCH (CACHED)
 
     print("\n 3. GARCH Forecast (Econometric Benchmark)")
     garch_result = load_or_run_forecast(

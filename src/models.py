@@ -7,7 +7,7 @@ from xgboost import XGBRegressor
 
 SCALING_FACTOR = 100
 def run_garch_estimation_for_report(log_returns: pd.Series):
-    print("\n--- RUNNING GARCH(1,1) PARAMETER ESTIMATION FOR REPORT ---")
+    print("\n running GARCH(1,1) parameter estimation for report")
     scaled_returns = log_returns * SCALING_FACTOR
     am = arch_model(scaled_returns, mean='Zero', vol='Garch', p=1, q=1)
     res = am.fit(disp='off') 
@@ -21,7 +21,7 @@ def run_garch_estimation_for_report(log_returns: pd.Series):
     
     persistence = params['alpha[1]'] + params['beta[1]']
     
-    print("\n--- VALUES TO BE COPIED INTO LATEX TABLE (GARCH Estimation) ---")
+    print("\n values to be copied into latex table")
     print(f"Omega (w): {params['omega']:.6e} | StdErr: {stderrs['omega']:.6e} | t-stat: {t_stats['omega']:.2f} | P-value: {p_values['omega']:.3f}")
     print(f"Alpha 1 (α₁): {params['alpha[1]']:.4f} | StdErr: {stderrs['alpha[1]']:.4f} | t-stat: {t_stats['alpha[1]']:.2f} | P-value: {p_values['alpha[1]']:.3f}")
     print(f"Beta 1 (β₁): {params['beta[1]']:.4f} | StdErr: {stderrs['beta[1]']:.4f} | t-stat: {t_stats['beta[1]']:.2f} | P-value: {p_values['beta[1]']:.3f}")
@@ -42,7 +42,6 @@ def garch_expanding_window_forecast(
     log_returns = compute_log_returns(data)
     scaling_factor = 100
     log_returns_scaled = log_returns * scaling_factor
-    realized_vol = data.loc[log_returns.index, 'RealizedVol']                               # we align realized vol with reutrns 
     garch_forecasts = []
     dates = []
 
@@ -58,13 +57,12 @@ def garch_expanding_window_forecast(
         )
         try:
             fitted = model.fit(disp="off")
-        except:                                                                             # fallback in case convergence fails 
+            forecast = fitted.forecast(horizon=1)
+            garch_forecasts.append(np.sqrt(forecast.variance.values[-1, 0]) / scaling_factor)
+            dates.append(log_returns.index[t])
+        except Exception: 
             continue 
-        forecast = fitted.forecast(horizon=1)                           
-        vol_forecast_variance = forecast.variance.values[-1, 0] / (scaling_factor**2)       # To revert to the original scale, we divide by the scaling factor squared.
-        vol_forecast = np.sqrt(vol_forecast_variance)
-        garch_forecasts.append(vol_forecast)
-        dates.append(log_returns.index[t])
+        
     result = pd.DataFrame({
         "Date": dates, 
         "GARCH_Forecast": garch_forecasts,
