@@ -1,67 +1,59 @@
-# Final-Project-
-Portfolio analysis 
+# Volatility Forecasting: GARCH vs. Machine Learning
 
-# Volatility Forecasting: GARCH vs Machine Learning
-
-## Description
-This project compares the performance of econometric and machine learning models in forecasting 1-day-ahead realized volatility of the S&P 500 index. The models used are: GARCH(1,1) (econometric benchmark), Random Forest, and XGBoost. The goal is to determine which model predicts volatility most accurately and to evaluate the trade-off between predictive accuracy and interpretability.
+## Purpose
+The goal of this project is to evaluate whether modern Machine Learning models (Random Forest, XGBoost) can outperform traditional econometric models (GARCH) in predicting stock market volatility. We use the S&P 500 index for forecasting and the VIX Index as a real-world benchmark to compare our predictions.
 
 ## Project Structure
-```
 
-.
+Final-Project/
+├── PROPOSAL.md            # Initial project proposal
+├── README.md              # Project documentation
+├── environment.yml        # Conda dependencies
+├── requirements.txt       # Pip dependencies (alternative)
 ├── data/
-│   ├── raw/             # Raw SP500 and VIX data
-│   └── processed/       # Features for ML models
-├── results/             # Forecasts and performance metrics
-├── src/                 # Python modules
-│   ├── data_loader.py
-│   ├── models.py
-│   └── evaluation.py
-└── main.py              # Main script to run the pipeline
+│   ├── raw/               # Original data files (merged_data.csv, sp_und.csv)
+│   └── processed/         # Generated features for ML (features.csv)
+├── main.py                # Main entry point to run the full pipeline
+├── src/                   # Python source code (Modular logic)
+│   ├── data_loader.py     # Downloads data & computes realized volatility
+│   ├── models.py          # GARCH, RF, and XGBoost window-based forecasting
+│   └── evaluation.py      # Performance metrics (MAE, RMSE) calculations
+├── results/               # Output metrics and forecast files
+└── tests/                 # Unit tests for code reliability
+    ├── test_data_loader.py
+    ├── test_models.py
+    └── test_evaluation.py
 
-````
 
-## Installation / Dependencies
-Make sure you have Python 3.8+ and install required packages:
-```bash
-pip install pandas numpy yfinance arch scikit-learn xgboost tqdm
-````
+## Environment & Dependencies
+This project was developed using Python 3.13.5.
 
-## Usage
+Prerequisites
 
-1. Run the full pipeline:
+Install the required libraries using one of the following:
 
-```bash
-python main.py
-```
+Conda: conda env create -f environment.yml
 
-This executes all steps: downloading SP500 and VIX data, computing realized volatility, feature engineering for ML, GARCH, Random Forest, and XGBoost forecasts, and model evaluation (RMSE, MAE, correlation).
+Pip: pip install -r requirements.txt
 
-2. Outputs:
+Main libraries: pandas, numpy, arch, scikit-learn, xgboost, yfinance, and pytest
 
-* `results/performance_metrics.csv` → performance table
-* `results/GARCH_forecast.csv`, `results/RF_forecast.csv`, `results/XGBoost_forecast.csv` → model forecasts
+## How to Use It
+To run the complete analysis from scratch, execute the following command in your terminal: "python main.py"
 
-## Main Modules
+Detailed Component Breakdown
 
-* **data_loader.py**: data download and preparation, realized volatility computation, ML feature creation.
-* **models.py**: GARCH estimation and ML model training / forecasting (RF and XGBoost).
-* **evaluation.py**: functions to compare models and compute RMSE, MAE, and correlation.
+1. src/ (Source Code)
 
-## Notes
+- data_loader.py: Handles data acquisition via yfinance, merging datasets, and calculating the 30-day rolling Realized Volatility.
+- models.py: Implements the Expanding Window forecasting logic for GARCH(1,1), Random Forest, and XGBoost models
+- evaluation.py: Computes statistical error metrics (MAE, RMSE) to compare forecasts against realized data.
 
-* **Expanding-window forecast**: forecasts are generated using a rolling window to simulate out-of-sample predictions.
-* **Caching**: forecasts are saved to avoid recalculating heavy models on every run.
-* **ML features**: include lagged variables, rolling statistics, and GARCH volatility as a benchmark.
+2. results/ (Outputs)
 
-## Author
+Once the execution is finished, the project generates:
+- performance_metrics.csv: A summary table comparing all models.
+- GARCH_forecast.csv, RF_forecast.csv, XGBoost_forecast.csv: Daily volatility predictions.
 
-Isaure Lunven
-
-```
-
-This is a direct copy-paste ready version for your `README.md`.  
-
-If you want, I can also make **a more GitHub-friendly version** with badges and headings for a cleaner look. Do you want me to do that?
-```
+## Testing
+To verify the code integrity before running a full simulation: "pytest tests/"
