@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
-from numpy import sqrt
-import yfinance as yf
-RANDOM_SEED = 42                                    # to be reproductible 
-np.random.seed(RANDOM_SEED)
+
 from src.data_loader import download_sp500, download_vix, compute_realized_volatility, save_features, create_ml_features, load_or_run_forecast
 from src.models import garch_expanding_window_forecast, ml_expanding_window_forecast, run_garch_estimation_for_report # <--- CORRECTION 1: Ajout de la fonction et fin de la ligne
 from src.evaluation import evaluate_models 
+
+RANDOM_SEED = 42 
+np.random.seed(RANDOM_SEED)                                   # to be reproductible 
 
 if __name__ == "__main__":
 

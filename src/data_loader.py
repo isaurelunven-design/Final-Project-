@@ -1,11 +1,15 @@
+# Dependencies
 import pandas as pd
 import yfinance as yf
 import numpy as np
 from arch import arch_model
-from tqdm import tqdm 
+
+
 
 ## Step 0: dowload SP500 and VIX  
-def download_sp500(start_date="2010-01-01", end_date="2024-12-31"):        
+def download_sp500(start_date="2010-01-01", end_date="2024-12-31"): 
+    """
+    """       
     sp500 = yf.download("^GSPC", start=start_date, end=end_date, auto_adjust=True)          # ^GSPC is the ticker for S&P 500 in Yahoo 
     sp500 = sp500[["Close"]].rename(columns={"Close": "SP500"})                             # we only keep the column "Close"
     sp500.index = pd.to_datetime(sp500.index)                                       
