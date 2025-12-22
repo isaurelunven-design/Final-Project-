@@ -1,0 +1,15 @@
+name: final-project-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.13  # Basé sur ton environnement actuel
+  - pandas=2.3.1
+  - numpy=2.3.1
+  - scikit-learn=1.7.1
+  - xgboost=3.1.2
+  - pytest=9.0.2
+  - pip
+  - pip:
+    - arch==8.0.0
+    - yfinance==0.2.66
