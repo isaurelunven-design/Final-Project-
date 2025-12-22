@@ -1,59 +1,51 @@
-# PROJECT PROPOSAL: VOLATILITY FORECASTING
+# Project Proposal: Volatility Forecasting
 
-**Auteur:** Isaure Lunven
-**Proposition de Projet:** Volatility Forecasting: Econometric vs Machine Learning Models
-
----
+Isaure Lunven  
+Project Proposition: Volatility Forecasting: Econometric vs Machine Learning Models
 
 ## Problem Statement and Motivation
 
-The project addresses the critical research question: **“Which model most accurately forecasts 1-day-ahead realized volatility of the S&P 500: GARCH(1,1), Random Forest, or XGBoost?”**
+The project addresses the following research question: Which model most accurately forecasts one day ahead realized volatility of the S&P 500, GARCH(1,1), Random Forest, or XGBoost?
 
-Accurate volatility forecasting is a fundamental requirement in quantitative finance, critical for effective risk management, option pricing, and dynamic portfolio allocation. Volatility is a complex, unobservable variable exhibiting characteristics.
+Accurate volatility forecasting is a fundamental requirement in quantitative finance, as it is critical for effective risk management, option pricing, and dynamic portfolio allocation. Volatility is a complex and unobservable variable that exhibits clustering, persistence, and non linear dynamics.
 
-This project is directly driven by my strong professional interest in **Asset Management**, where volatility modeling is a foundational skill for constructing risk-adjusted investment portfolios. The motivation is deeply rooted in connecting theoretical knowledge from various concurrent courses—including **Investments**, **Corporate Finance**, and **Advanced Programming**—to a rigorous, real-world financial problem.
+This project is driven by my professional interest in asset management, where volatility modeling is a foundational skill for constructing risk adjusted investment portfolios. The motivation is rooted in connecting theoretical knowledge from concurrent courses, including Investments, Corporate Finance, and Advanced Programming, to a rigorous real world financial problem.
 
-The project’s empirical objective is to perform a direct comparison between the traditional econometric benchmark (GARCH) and modern, non-linear machine learning ensemble models, quantifying the performance gain and addressing the strategic trade-off between model accuracy and regulatory interpretability.
-
----
+The empirical objective of the project is to perform a direct comparison between a traditional econometric benchmark, GARCH, and modern non linear machine learning ensemble models. The analysis will quantify performance differences while addressing the trade off between predictive accuracy and model interpretability.
 
 ## Planned Approach and Technologies
 
-The project will be implemented in Python, using industry-standard libraries essential for financial data science:
+The project will be implemented in Python using industry standard libraries for financial data science.
 
-* **pandas / NumPy:** For efficient data collection, cleaning, and numerical computations.
-* **arch:** To estimate the GARCH(1,1) model via Maximum Likelihood Estimation (MLE).
-* **scikit-learn / xgboost:** For implementing and training the Machine Learning models.
-* **yfinance / fredapi:** To collect daily stock, index, and ETF data from Yahoo Finance and FRED.
-
----
+Pandas and NumPy will be used for data collection, cleaning, and numerical computations.  
+The arch library will be used to estimate the GARCH(1,1) model via maximum likelihood estimation.  
+Scikit learn and XGBoost will be used to implement and train the machine learning models.  
+Yfinance and fredapi will be used to collect daily financial data from Yahoo Finance and FRED.
 
 ## Planned Steps
 
-* **Data Collection and Target Computation:** Daily adjusted close prices for the S&P 500 Index (SPX) and the VIX Index (2010–2024) will be retrieved. The target variable, 1-day-ahead Realized Volatility (RV), will be computed using a 30-day rolling window of squared daily returns, strictly lagged by one day to prevent data leakage.
-* **Feature Engineering:** For machine learning models, a set of lagged features will be constructed, including lagged RV, lagged absolute returns, rolling standard deviation, and the lagged VIX value.
-* **Model Estimation and Validation:** The GARCH(1,1) model will be implemented alongside Random Forest and XGBoost regressors. All models will be validated using a rigorous **expanding-window backtesting** scheme to simulate true out-of-sample forecasting conditions.
-* **Forecasting and Evaluation:** One-day-ahead volatility forecasts will be generated for all models and the VIX benchmark. Model performance will be evaluated using standard metrics: Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Correlation.
-* **Reporting:** A structured academic report will be produced, detailing the methodology, results, and conclusions, along with a modular codebase managed via Git.
+Data collection and target computation will involve retrieving daily adjusted close prices for the S&P 500 index and the VIX index over the period 2010 to 2024. The target variable, one day ahead realized volatility, will be computed using a 30 day rolling window of squared daily returns, strictly lagged by one day to prevent data leakage.
 
----
+Feature engineering will consist of constructing lagged explanatory variables for the machine learning models, including lagged realized volatility, lagged absolute returns, rolling standard deviation, and the lagged VIX value.
+
+Model estimation and validation will include the implementation of a GARCH(1,1) model alongside Random Forest and XGBoost regressors. All models will be evaluated using an expanding window backtesting framework to replicate true out of sample forecasting conditions.
+
+Forecasting and evaluation will generate one day ahead volatility forecasts for all models as well as a VIX based benchmark. Model performance will be assessed using standard evaluation metrics such as root mean squared error, mean absolute error, and correlation.
+
+Reporting will consist of a structured academic report presenting the methodology, results, and conclusions, supported by a modular and well documented codebase managed using Git.
 
 ## Expected Challenges and How to Address Them
 
-The primary challenge anticipated is the **high computational cost** associated with expanding-window backtesting. **Mitigation:** A custom caching strategy will be implemented to store pre-computed forecasts to disk, significantly reducing execution time and ensuring project feasibility.
+A primary challenge is the high computational cost associated with expanding window backtesting. This issue will be addressed by implementing a caching strategy that stores pre computed forecasts to disk, significantly reducing execution time and ensuring feasibility.
 
-Another crucial challenge relates to **data quality and integrity**. Financial time-series data retrieved from APIs often contain missing values or misaligned indexes between the S\&P 500 and VIX series. **Mitigation:** The initial data loading phase will involve extensive cleaning, including **imputing missing values** using standard techniques like forward filling, **re-indexing** the series to ensure perfect date synchronization, and performing **robustness checks** to confirm the required time range is fully covered and usable.
-
----
+Another challenge concerns data quality and integrity. Financial time series data retrieved from APIs may contain missing values or misaligned indexes between the S&P 500 and VIX series. This will be mitigated through careful data cleaning procedures, including handling missing values via forward filling, re indexing to ensure date alignment, and robustness checks to confirm that the required time range is fully usable.
 
 ## Success Criteria
 
-* A modular and well-documented codebase will be implemented within a structured `src/` Python package.
-* A robust, reproducible forecasting pipeline executable from a single entry point.
-* A clear empirical conclusion will be drawn, quantifying the difference in predictive power (RMSE, MAE) between econometric and machine learning models, providing a definitive answer to the research question.
+The project will deliver a modular and well documented codebase structured within a src Python package.  
+A fully reproducible forecasting pipeline will be executable from a single entry point.  
+A clear empirical conclusion will quantify the difference in predictive performance between econometric and machine learning models using RMSE and MAE, directly answering the research question.
 
----
+## Stretch Goals
 
-## Stretch Goals (If Time Allows)
-
-If the core objectives are achieved ahead of schedule, the project will be extended to include the implementation of a comprehensive suite of **unit tests** to ensure the robustness, quality, and reliability of the entire codebase.
+If time permits, the project will be extended to include a suite of unit tests to ensure robustness, code quality, and long term reliability.
