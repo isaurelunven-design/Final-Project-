@@ -37,28 +37,32 @@ def compute_log_returns(data:pd.DataFrame) -> pd.Series:                        
 
 def garch_expanding_window_forecast(
     data: pd.DataFrame,                                        
-    start_window: int = 1000                                                                # start_window: number of initial observations before forecasting starts 
+    start_window: int = 1000                                                                # Start after 1000 days to have enough history
 ) -> pd.DataFrame: 
     log_returns = compute_log_returns(data)
-    scaling_factor = 100
+    
+    scaling_factor = 100                                                                    # Scale by 100 so the numbers are bigger (helps the model converge)
     log_returns_scaled = log_returns * scaling_factor
+    
     garch_forecasts = []
     dates = []
 
-    for t in tqdm(range(start_window, len(log_returns_scaled))): 
-        train_returns_scaled = log_returns_scaled.iloc[:t]            
+    for t in tqdm(range(start_window, len(log_returns_scaled))):                            # it 'expands' the training set day by day
+        train_returns_scaled = log_returns_scaled.iloc[:t]                                  # Only take data up to 't' (prevents cheating/look-ahead bias)
+        
         model = arch_model(
             train_returns_scaled, 
-            p=1,
-            q=1,
+            p=1, q=1,
             vol="GARCH", 
             dist="normal",
             rescale=False 
         )
+        
         try:
             fitted = model.fit(disp="off")
-            forecast = fitted.forecast(horizon=1)
-            garch_forecasts.append(np.sqrt(forecast.variance.values[-1, 0]) / scaling_factor)
+            forecast = fitted.forecast(horizon=1)                                           # Predict the variance for the very next day
+            vol_forecast = np.sqrt(forecast.variance.values[-1, 0]) / scaling_factor        # Take the square root to get volatility, then scale back down
+            garch_forecasts.append(vol_forecast)
             dates.append(log_returns.index[t])
         except Exception: 
             continue 
