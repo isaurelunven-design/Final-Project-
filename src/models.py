@@ -92,9 +92,9 @@ def ml_expanding_window_forecast(
     ml_forecasts = []
 
     for t in tqdm(range(start_window, len(df)), desc=f"Forecasting with {model_type}"):          #Training and forecasting loop (starts after the initial window)
-        X_train = X.iloc[:t]                     
+        X_train = X.iloc[:t]                        #Include all observations prior to index t for recursive model fitting.                
         y_train = y.iloc[:t]
-        X_test = X.iloc[t].to_frame().T            
+        X_test = X.iloc[t].to_frame().T     
         model.fit(X_train, y_train)
         forecast = model.predict(X_test)[0]
         ml_forecasts.append(forecast)

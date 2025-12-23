@@ -4,7 +4,6 @@ import numpy as np
 from arch import arch_model
 
 
-
 ## Step 0: dowload SP500 and VIX  
 def download_sp500(start_date="2010-01-01", end_date="2024-12-31"): 
     """

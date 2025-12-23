@@ -37,7 +37,6 @@ def sample_results():
     """Creates simulated forecast data for testing."""
     dates = pd.date_range(start="2023-01-01", periods=10, freq='D')
     realized_vol = pd.Series([0.1, 0.15, 0.12, 0.2, 0.18, 0.1, 0.15, 0.12, 0.2, 0.18], index=dates, name='RealizedVol')
-
     # Model A: Good performance (close forecasts)
     forecast_a = pd.Series([0.11, 0.16, 0.13, 0.21, 0.19, 0.11, 0.16, 0.13, 0.21, 0.19], index=dates, name='ModelA_Forecast')
     df_a = pd.concat([realized_vol, forecast_a], axis=1)
@@ -67,7 +66,6 @@ def test_evaluate_models_output_format(sample_results):             # We test th
 
 def test_evaluate_models_metrics_calculation(sample_results):       # We test that metrics are calculated correctly and sorting is respected 
     results_df = evaluate_models(sample_results)
-    
     # Model A is better than B in the fixture, so RMSE(A) < RMSE(B)
     rmse_a = results_df.loc['ModelA', 'RMSE']
     rmse_b = results_df.loc['ModelB', 'RMSE']
