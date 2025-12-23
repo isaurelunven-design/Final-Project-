@@ -4,25 +4,28 @@
 The goal of this project is to evaluate whether modern Machine Learning models (Random Forest, XGBoost) can outperform traditional econometric models (GARCH) in predicting stock market volatility. We use the S&P 500 index for forecasting and the VIX Index as a real-world benchmark to compare our predictions.
 
 ## Project Structure
+## Project Structure
 
+```text
 Final-Project/
 ├── PROPOSAL.md            # Initial project proposal
 ├── README.md              # Project documentation
 ├── environment.yml        # Conda dependencies
-├── requirements.txt       # Pip dependencies (alternative)
+├── requirements.txt       # Pip dependencies
 ├── data/
-│   ├── raw/               # Original data files (merged_data.csv, sp_und.csv)
-│   └── processed/         # Generated features for ML (features.csv)
-├── main.py                # Main entry point to run the full pipeline
-├── src/                   # Python source code (Modular logic)
-│   ├── data_loader.py     # Downloads data & computes realized volatility
-│   ├── models.py          # GARCH, RF, and XGBoost window-based forecasting
-│   └── evaluation.py      # Performance metrics (MAE, RMSE) calculations
-├── results/               # Output metrics and forecast files
-└── tests/                 # Unit tests for code reliability
+│   ├── raw/               # Original data files
+│   └── processed/         # Generated features for ML
+├── main.py                # Main entry point
+├── src/                   # Python source code
+│   ├── data_loader.py     # Data & Volatility computation
+│   ├── models.py          # GARCH, RF, and XGBoost forecasting
+│   └── evaluation.py      # Metrics (MAE, RMSE) calculations
+├── results/               # Output metrics and forecasts
+└── tests/                 # Unit tests
     ├── test_data_loader.py
     ├── test_models.py
     └── test_evaluation.py
+```
 
 
 ## Environment & Dependencies
