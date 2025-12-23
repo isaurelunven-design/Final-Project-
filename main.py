@@ -66,7 +66,7 @@ if __name__ == "__main__":
         start_window=start_window_size
     )
 
-    ## Step 5: We evaluate and compare models 
+    ## Step 5: We evaluate and compare these models 
 
     vix_benchmark = data.loc[garch_result.index]
     vix_benchmark = vix_benchmark[['VIX']].rename(columns={'VIX': 'VIX_Forecast'})
