@@ -4,7 +4,6 @@
 The goal of this project is to evaluate whether modern Machine Learning models (Random Forest, XGBoost) can outperform traditional econometric models (GARCH) in predicting stock market volatility. We use the S&P 500 index for forecasting and the VIX Index as a real-world benchmark to compare our predictions.
 
 ## Project Structure
-## Project Structure
 
 ```text
 Final-Project/
@@ -29,34 +28,36 @@ Final-Project/
 
 
 ## Environment & Dependencies
-This project was developed using Python 3.13.5.
+Python ≥ 3.10 recommended
+Developed and tested using Python 3.13.5
 
 Prerequisites
 
-Install the required libraries using one of the following:
-
-Conda: conda env create -f environment.yml
-
-Pip: pip install -r requirements.txt
+Install the required libraries using one of the following: 
+```conda env create -f environment.yml```
+or 
+```Pip: pip install -r requirements.txt```
 
 Main libraries: pandas, numpy, arch, scikit-learn, xgboost, yfinance, and pytest
 
 ## How to Use It
-To run the complete analysis from scratch, execute the following command in your terminal: "python main.py"
+To execute the full volatility forecasting pipeline from scratch, run: 
+```python main.py```
+This command performs data loading, feature engineering, expanding-window model training, and out-of-sample evaluation. 
 
-Detailed Component Breakdown
+## Code Overview
 
-1. src/ (Source Code)
+src/
+data_loader.py: Retrieves financial data using yfinance, aligns time series, and computes 30-day rolling realized volatility.
+models.py: Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
+evaluation.py: Computes statistical performance metrics (RMSE, MAE).
 
-- data_loader.py: Handles data acquisition via yfinance, merging datasets, and calculating the 30-day rolling Realized Volatility.
-- models.py: Implements the Expanding Window forecasting logic for GARCH(1,1), Random Forest, and XGBoost models
-- evaluation.py: Computes statistical error metrics (MAE, RMSE) to compare forecasts against realized data.
-
-2. results/ (Outputs)
-
-Once the execution is finished, the project generates:
-- performance_metrics.csv: A summary table comparing all models.
-- GARCH_forecast.csv, RF_forecast.csv, XGBoost_forecast.csv: Daily volatility predictions.
+results/
+After execution, the following outputs are generated:
+performance_metrics.csv: Summary table comparing all models.
+GARCH_forecast.csv, RF_forecast.csv, XGBoost_forecast.csv: Daily volatility forecasts.
 
 ## Testing
-To verify the code integrity before running a full simulation: "pytest tests/"
+To verify code integrity before running a full simulation: 
+```pytest tests/```
+ 
