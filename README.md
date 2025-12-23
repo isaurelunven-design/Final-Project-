@@ -59,6 +59,7 @@ This command performs data loading, feature engineering, expanding-window model 
 
 ## Code Overview
 
+<<<<<<< HEAD
 #src/
 
 data_loader.py: Retrieves financial data using yfinance, aligns time series, and computes 30-day rolling realized volatility.
@@ -66,6 +67,15 @@ data_loader.py: Retrieves financial data using yfinance, aligns time series, and
 models.py: Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
 
 evaluation.py: Computes statistical performance metrics (RMSE, MAE).
+=======
+src/
+data_loader.py
+Retrieves SP500 and VIX data from Yahoo Finance, aligns time series, and computes 30-day rolling realized volatility.
+models.py
+Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
+evaluation.py
+Computes statistical performance metrics such as RMSE and MAE.
+>>>>>>> 5fc66e914ca2cf1a10fc737051a212fbb243ef5f
 
 
 #results/ After execution, the following outputs are generated:
