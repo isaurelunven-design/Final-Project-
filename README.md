@@ -59,21 +59,21 @@ This command performs data loading, feature engineering, expanding-window model 
 
 * **<u>src/</u>**
 
-- <u>data_loader.py:</u> Retrieves S&P 500 and VIX data from Yahoo Finance, aligns time series, and computes 30-day rolling realized volatility.
+<u>data_loader.py:</u> Retrieves S&P 500 and VIX data from Yahoo Finance, aligns time series, and computes 30-day rolling realized volatility.
 
-- <u>models.py:</u> Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
+<u>models.py:</u> Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
 
-- <u>evaluation.py:</u>Computes statistical performance metrics such as RMSE and MAE.
+<u>evaluation.py:</u>Computes statistical performance metrics such as RMSE and MAE.
 
 * **<u>results/</u>** After execution, the following outputs are generated:
 
-- <u>performance_metrics.csv:</u>Summary table comparing all models.
+<u>performance_metrics.csv:</u>Summary table comparing all models.
 
-- <u>GARCH_forecast.csv:</u> Daily volatility forecasts for GARCH.
+<u>GARCH_forecast.csv:</u> Daily volatility forecasts for GARCH.
 
-- <u>RF_forecast.csv:</u> Daily volatility forecasts for Random Forest.
+<u>RF_forecast.csv:</u> Daily volatility forecasts for Random Forest.
 
-- <u>XGBoost_forecast.csv:</u> Daily volatility forecasts for XGBoost.
+<u>XGBoost_forecast.csv:</u> Daily volatility forecasts for XGBoost.
 
 
 ## Testing
