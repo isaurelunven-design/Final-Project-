@@ -4,14 +4,13 @@
 The goal of this project is to evaluate whether modern Machine Learning models (Random Forest, XGBoost) can outperform traditional econometric models (GARCH) in predicting stock market volatility. We use the S&P 500 index for forecasting and the VIX Index as a real-world benchmark to compare our predictions.
 
 ## Data
-his project utilizes publicly available financial data imported via the yfinance API. We specifically collect:
+This project utilizes publicly available financial data imported via the `yfinance` API. We specifically collect:
+* **S&P 500 ($\wedge$GSPC):** Used to calculate historical returns and realized volatility.
+* **VIX Index ($\wedge$VIX):** Used as an external market sentiment feature and performance benchmark. 
 
-S&P 500 (∧GSPC): Used to calculate historical returns and realized volatility.
-
-VIX Index (∧VIX): Used as an external market sentiment feature and performance benchmark. The data is open-access, ensuring that the results of this study are fully reproducible by any user without requiring proprietary API keys.
+The data is open-access, ensuring that the results of this study are fully reproducible by any user without requiring proprietary API keys.
 
 ## Project Structure
-
 ```text
 Final-Project/
 ├── PROPOSAL.md            # Initial project proposal
@@ -19,10 +18,10 @@ Final-Project/
 ├── environment.yml        # Conda dependencies
 ├── requirements.txt       # Pip dependencies
 ├── data/
-│   ├── raw/               # Original data files
+│   ├── raw/               # Original data files (SPX & VIX)
 │   └── processed/         # Generated features for ML
 ├── main.py                # Main entry point
-├── src/                   # Python source code
+├── src/                   # Python source code (Modular logic)
 │   ├── data_loader.py     # Data & Volatility computation
 │   ├── models.py          # GARCH, RF, and XGBoost forecasting
 │   └── evaluation.py      # Metrics (MAE, RMSE) calculations
@@ -32,7 +31,6 @@ Final-Project/
     ├── test_models.py
     └── test_evaluation.py
 ```
-
 
 ## Environment & Dependencies
 Python ≥ 3.10 recommended
@@ -59,34 +57,24 @@ This command performs data loading, feature engineering, expanding-window model 
 
 ## Code Overview
 
-<<<<<<< HEAD
-#src/
+* **<u>src/</u>**
 
-data_loader.py: Retrieves financial data using yfinance, aligns time series, and computes 30-day rolling realized volatility.
+<u>data_loader.py:</u> Retrieves S&P 500 and VIX data from Yahoo Finance, aligns time series, and computes 30-day rolling realized volatility.
 
-models.py: Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
+<u>models.py:</u> Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
 
-evaluation.py: Computes statistical performance metrics (RMSE, MAE).
-=======
-src/
-data_loader.py
-Retrieves SP500 and VIX data from Yahoo Finance, aligns time series, and computes 30-day rolling realized volatility.
-models.py
-Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
-evaluation.py
-Computes statistical performance metrics such as RMSE and MAE.
->>>>>>> 5fc66e914ca2cf1a10fc737051a212fbb243ef5f
+<u>evaluation.py:</u>Computes statistical performance metrics such as RMSE and MAE.
 
+* **<u>results/</u>** After execution, the following outputs are generated:
 
-#results/ After execution, the following outputs are generated:
+<u>performance_metrics.csv:</u>Summary table comparing all models.
 
-performance_metrics.csv: Summary table comparing all models.
+<u>GARCH_forecast.csv:</u> Daily volatility forecasts for GARCH.
 
-GARCH_forecast.csv: Daily volatility forecasts for GARCH.
+<u>RF_forecast.csv:</u> Daily volatility forecasts for Random Forest.
 
-RF_forecast.csv: Daily volatility forecasts for Random Forest.
+<u>XGBoost_forecast.csv:</u> Daily volatility forecasts for XGBoost.
 
-XGBoost_forecast.csv: Daily volatility forecasts for XGBoost.
 
 ## Testing
 To verify code integrity before running a full simulation, run in the terminal: 
