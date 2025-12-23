@@ -33,16 +33,21 @@ Developed and tested using Python 3.13.5
 
 Prerequisites
 
-Install the required libraries using one of the following: 
+Install the required libraries using one of the following:
+
 ```conda env create -f environment.yml```
+
 or 
+
 ```Pip: pip install -r requirements.txt```
 
 Main libraries: pandas, numpy, arch, scikit-learn, xgboost, yfinance, and pytest
 
 ## How to Use It
 To execute the full volatility forecasting pipeline from scratch, run: 
+
 ```python main.py```
+
 This command performs data loading, feature engineering, expanding-window model training, and out-of-sample evaluation. 
 
 ## Code Overview
@@ -59,5 +64,6 @@ GARCH_forecast.csv, RF_forecast.csv, XGBoost_forecast.csv: Daily volatility fore
 
 ## Testing
 To verify code integrity before running a full simulation: 
+
 ```pytest tests/```
  
