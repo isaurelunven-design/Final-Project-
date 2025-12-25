@@ -21,7 +21,7 @@ if __name__ == "__main__":
     data['VIX']   = pd.to_numeric(data['VIX'], errors='coerce')
     data = data.dropna(subset=['SP500', 'VIX'])                                     
     data = compute_realized_volatility(data, window=30) 
-    from src.models import compute_log_returns # Assurez-vous d'importer ceci
+    from src.models import compute_log_returns
     log_returns = compute_log_returns(data)
     print("\n 1.b. GARCH Parameter Estimation for LaTeX Report")
     run_garch_estimation_for_report(log_returns)
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     vix_benchmark = data.loc[garch_result.index]
     vix_benchmark = vix_benchmark[['VIX']].rename(columns={'VIX': 'VIX_Forecast'})
-    vix_benchmark['VIX_Forecast'] = (vix_benchmark['VIX_Forecast'] / 100) / np.sqrt(252)                       #le désanualiser 
+    vix_benchmark['VIX_Forecast'] = (vix_benchmark['VIX_Forecast'] / 100) / np.sqrt(252)                      # we de-annualize it 
     vix_benchmark['RealizedVol'] = garch_result['RealizedVol']
     print("\n 5. Evaluation of Model's performance")
 

@@ -44,29 +44,26 @@ def test_compute_log_returns(sample_garch_data):
     assert log_returns.iloc[0] == pytest.approx(expected_return_1)
     assert log_returns.iloc[1] == pytest.approx(expected_return_2)
 
-@patch('src.models.arch_model')                                                 # avoid running the model that can be very slow 
+@patch('src.models.arch_model')                                                                 # avoid running the model that can be very slow 
 def test_garch_expanding_window_forecast(mock_arch_model, sample_garch_data):
     mock_fitted = MagicMock()
-    mock_fitted.forecast.return_value.variance.values = np.array([[1.0]])       # MOCK: Simulate variance=1.0. Rescaled volatility should be sqrt(1.0 / 100**2) = 0.01. 
+    mock_fitted.forecast.return_value.variance.values = np.array([[1.0]])                       # MOCK: Simulate variance=1.0. Rescaled volatility should be sqrt(1.0 / 100**2) = 0.01. 
     mock_arch_model.return_value.fit.return_value = mock_fitted
-    start_window = 5                                                            # little window because 1000 too much 
+    start_window = 5                                                                            # little window because 1000 too much 
     result = garch_expanding_window_forecast(sample_garch_data, start_window=start_window)
 
-    # 1. check the output form 
-    assert isinstance(result, pd.DataFrame)
+
+    assert isinstance(result, pd.DataFrame)                                                     # check the output form 
     assert 'GARCH_Forecast' in result.columns
     assert 'RealizedVol' in result.columns
     
-    # 2. check the lenght of the prevision 
-    assert len(result) == (len(sample_garch_data) - 1) - start_window
-    assert len(result) == 4                                                     # Total iterations = (Total_Data - Start_Window). 9-5=4 iterations.
+    assert len(result) == (len(sample_garch_data) - 1) - start_window                            # check the lenght of the prevision 
+    assert len(result) == 4                                                                      # Total iterations = (Total_Data - Start_Window). 9-5=4 iterations.
 
-    # 3. check of the scaling and the forecast value
-    assert (result['GARCH_Forecast'].iloc[0]) == pytest.approx(np.sqrt(1.0 / 100**2)) 
+    assert (result['GARCH_Forecast'].iloc[0]) == pytest.approx(np.sqrt(1.0 / 100**2))            # Check of the scaling and the forecast value
     assert (result['GARCH_Forecast'] == 0.01).all()
 
-    # 4. check the RealizedVol allignment
-    expected_realized_vol = sample_garch_data.loc[result.index, 'RealizedVol'].values
+    expected_realized_vol = sample_garch_data.loc[result.index, 'RealizedVol'].values            # Check the RealizedVol allignment
     assert (result['RealizedVol'].values == expected_realized_vol).all()
 
 @patch('src.models.XGBRegressor')               # same strcuture as before 
@@ -96,6 +93,6 @@ def test_ml_expanding_window_forecast_rf(sample_ml_data):
     assert f'{model_type}_Forecast' in result.columns
     assert len(result) == 5
 
-def test_ml_expanding_window_forecast_unsupported_model(sample_ml_data):           # we Test that an exception is raised for an unsupported model type 
+def test_ml_expanding_window_forecast_unsupported_model(sample_ml_data):                    # we Test that an exception is raised for an unsupported model type 
     with pytest.raises(ValueError, match="Model type UNSUPPORTED not supported."):
         ml_expanding_window_forecast(sample_ml_data, model_type='UNSUPPORTED')

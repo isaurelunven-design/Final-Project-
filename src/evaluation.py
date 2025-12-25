@@ -15,7 +15,7 @@ def evaluate_models(results_list: List[pd.DataFrame]) -> pd.DataFrame:
         if not forecast_cols:
             continue
             
-        model_name: str = forecast_cols[0].replace('_Forecast', '')                 # Extract the model name (e.g., GARCH, RF, XGBoost, VIX)
+        model_name: str = forecast_cols[0].replace('_Forecast', '')                  # Extract the model name (GARCH, RF, XGBoost, VIX)
         forecast: pd.Series = result_df[f'{model_name}_Forecast']
         aligned_data: pd.DataFrame = pd.concat([realized_vol, forecast], axis=1).dropna()
         if aligned_data.empty:

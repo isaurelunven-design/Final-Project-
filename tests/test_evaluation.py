@@ -81,7 +81,7 @@ def test_evaluate_models_metrics_calculation(sample_results):       # We test th
     
 def test_evaluate_models_alignment(sample_results):
     results_df = evaluate_models(sample_results)
-    realized_vol = sample_results[0]['RealizedVol']                 # Recalculate RMSE for ModelC manually on the aligned sub-section
+    realized_vol = sample_results[0]['RealizedVol']                 # Recalculate RMSE for Model C manually on the aligned sub-section
     forecast_c = sample_results[2]['ModelC_Forecast']
     aligned_data = pd.concat([realized_vol, forecast_c], axis=1).dropna()
     RV_actual = aligned_data['RealizedVol'].values
@@ -89,4 +89,4 @@ def test_evaluate_models_alignment(sample_results):
     expected_rmse_c = sqrt(mean_squared_error(RV_actual, RV_predicted))
     
     assert results_df.loc['ModelC', 'RMSE'] == pytest.approx(expected_rmse_c)
-    assert not pd.isna(results_df.loc['ModelC', 'Correlation'])   # we check that the calculation was successful (correlation not NaN)
+    assert not pd.isna(results_df.loc['ModelC', 'Correlation'])     # we check that the calculation was successful (correlation not NaN)

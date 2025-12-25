@@ -6,6 +6,8 @@ from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 
 SCALING_FACTOR = 100
+
+# Table for GARCH's coefficient 
 def run_garch_estimation_for_report(log_returns: pd.Series):
     print("\n running GARCH(1,1) parameter estimation for report")
     scaled_returns = log_returns * SCALING_FACTOR
@@ -31,6 +33,7 @@ def run_garch_estimation_for_report(log_returns: pd.Series):
     return res
 
 ## Step 3: We forecast through GARCH  
+
 def compute_log_returns(data:pd.DataFrame) -> pd.Series:                                    # we compute daily log returns from the SP500 column 
     return np.log(data['SP500']/data['SP500'].shift(1)).dropna()
 
@@ -75,6 +78,7 @@ def garch_expanding_window_forecast(
     return result.set_index("Date")
 
 ## Step 4: We forecast by using ML model 
+
 def ml_expanding_window_forecast(
     processed_data: pd.DataFrame, 
     model_type: str, 
@@ -91,8 +95,8 @@ def ml_expanding_window_forecast(
         raise ValueError(f"Model type {model_type} not supported.")
     ml_forecasts = []
 
-    for t in tqdm(range(start_window, len(df)), desc=f"Forecasting with {model_type}"):          #Training and forecasting loop (starts after the initial window)
-        X_train = X.iloc[:t]                        #Include all observations prior to index t for recursive model fitting.                
+    for t in tqdm(range(start_window, len(df)), desc=f"Forecasting with {model_type}"):          # Training and forecasting loop (starts after the initial window)
+        X_train = X.iloc[:t]                                                                     # Include all observations prior to index t for recursive model fitting.                
         y_train = y.iloc[:t]
         X_test = X.iloc[t].to_frame().T     
         model.fit(X_train, y_train)
