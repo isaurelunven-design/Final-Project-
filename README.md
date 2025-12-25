@@ -49,7 +49,7 @@ or
 Main libraries: pandas, numpy, arch, scikit-learn, xgboost, yfinance, and pytest
 
 ## How to Use It
-To execute the full volatility forecasting pipeline from scratch, run in the terminal:  
+To execute the full volatility forecasting pipeline from scratch, navigate to the project folder and run in the terminal:  
 
 ```python main.py```
 
