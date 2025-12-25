@@ -77,7 +77,7 @@ This command performs data loading, feature engineering, expanding-window model 
 
 
 ## Testing
-To verify code integrity before running a full simulation, run in the terminal: 
+To verify code integrity before running a full simulation, run in the terminal (11 tests included): 
 
 ```pytest tests/```
  
