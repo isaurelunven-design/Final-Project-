@@ -63,7 +63,7 @@ This command performs data loading, feature engineering, expanding-window model 
 
 <u>models.py:</u> Implements expanding-window forecasts for GARCH(1,1), Random Forest, and XGBoost models.
 
-<u>evaluation.py:</u>Computes statistical performance metrics such as RMSE and MAE.
+<u>evaluation.py:</u> Computes statistical performance metrics such as RMSE and MAE.
 
 * **<u>results/</u>** After execution, the following outputs are generated:
 
@@ -77,8 +77,9 @@ This command performs data loading, feature engineering, expanding-window model 
 
 
 ## Testing
-To verify code integrity before running a full simulation, run in the terminal: 
+To verify code integrity before running a full simulation, run in the terminal (11 tests included): 
 
 ```pytest tests/```
- 
+
  Done by Isaure Lunven 
+ 
